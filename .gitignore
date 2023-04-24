@@ -1,0 +1,32 @@
+# Ignore .env files
+.env
+
+# Ignore Python cache folders
+__pycache__/
+
+# Ignore machine learning models
+*.h5
+*.pkl
+models/
+
+# Ignore system files
+.DS_Store
+
+# Ignore environment files
+venv/
+requirements.txt
+*.egg-info/
+dist/
+build/
+*.pyc
+*.pyo
+
+# Ignore IDE files
+.vscode/
+.idea/
+*.code-workspace
+
+# Ignore build files
+target/
+*.jar
+*.class
