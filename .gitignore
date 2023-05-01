@@ -30,3 +30,6 @@ build/
 target/
 *.jar
 *.class
+
+# Ignore data files
+data/
