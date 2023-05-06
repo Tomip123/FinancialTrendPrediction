@@ -59,7 +59,7 @@ def main():
     train_data, val_data = train_test_split(all_stock_data, test_size=0.2, shuffle=False)
 
     # Define the lookback period
-    lookback = 500
+    lookback = 400
 
     # Create a new DataFrame for the features, KEEPING the 'Index Movement' column
     train_features = train_data

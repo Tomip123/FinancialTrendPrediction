@@ -9,10 +9,10 @@ from tensorflow.keras.models import load_model
 from config import MODELS_DIR, DATA_DIR
 
 # Define the number of previous data points to use for prediction
-lookback = 500
+lookback = 400
 
 # Load the trained model
-model = load_model(os.path.join(MODELS_DIR, 'best_model_1.h5'))
+model = load_model(os.path.join(MODELS_DIR, 'best_model.h5'))
 
 # Load the latest normalized data from the csv file
 all_stock_data = pd.read_csv(os.path.join(DATA_DIR, 'stock_data_normalized.csv'), index_col=0)
@@ -52,5 +52,7 @@ filtered_movements = filtered_movements / filtered_movements[0]
 # Plot the predicted movements, the graph should start from number 1
 plt.plot(normalized_movements, label='Predictions')
 plt.plot(filtered_movements, label='Filtered Predictions')
+plt.xlabel('Days')
+plt.ylabel('Normalized Movements')
 plt.legend()
-plt.show()
+plt.savefig('predictions.png')
