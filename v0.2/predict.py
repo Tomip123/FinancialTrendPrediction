@@ -34,10 +34,10 @@ predicted_movements = model.predict(recent_sequences)
 # Inverse transform the predicted movements using the scaler
 predicted_movements = scaler.inverse_transform(predicted_movements)
 
-# Define the filter parameters
-cutoff_freq = 0.1  # Cutoff frequency in Hz
+# Define the filter parameters for stock market prediction
+cutoff_freq = 0.1  # Cutoff frequency in Hz for filtering out high-frequency noise
 nyquist_freq = 0.5 * 1  # Nyquist frequency is half the sampling rate (1 Hz in this case)
-order = 2  # Filter order
+order = 2  # Filter order for smoothing out the predicted movements
 
 # Calculate the filter coefficients
 b, a = butter(order, cutoff_freq/nyquist_freq, btype='low')
