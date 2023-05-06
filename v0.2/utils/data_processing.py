@@ -3,8 +3,20 @@ from sklearn import preprocessing
 import os
 from config import DATA_DIR
 from utils.load_data import load_data
+import pickle
 
 def process_data(all_stock_data):
+    """
+    This function processes the stock data by calculating technical indicators such as RSI, MACD, Bolinger Bands, and MA20.
+    It also calculates the overall index of the portfolio and combines the technical indicators for all stocks into a single value.
+    The processed data is saved to a CSV file and returned as a pandas DataFrame.
+
+    Parameters:
+    all_stock_data (pandas.DataFrame): A DataFrame containing the stock data for all symbols.
+
+    Returns:
+    pandas.DataFrame: A DataFrame containing the processed stock data.
+    """
 
     if os.path.exists(os.path.join(DATA_DIR, 'processed_data.csv')):
         return load_data(DATA_DIR, 'processed_data.csv')
@@ -22,14 +34,12 @@ def process_data(all_stock_data):
         all_stock_data[(symbol, 'Bolinger High')] = all_stock_data[(symbol, 'MA20')] + (all_stock_data[symbol]['Close'].rolling(window=20).std() * 2)
         all_stock_data[(symbol, 'Bolinger Low')] = all_stock_data[(symbol, 'MA20')] - (all_stock_data[symbol]['Close'].rolling(window=20).std() * 2)
         all_stock_data[(symbol, 'MACD')] = all_stock_data[symbol]['Close'].ewm(span=12, adjust=False).mean() - all_stock_data[symbol]['Close'].ewm(span=26, adjust=False).mean()
+        all_stock_data[(symbol, 'Daily Return')] = all_stock_data[symbol]['Close'].pct_change()
         
     # Calculate the overall index of the portfolio
-    all_stock_data['Index Movement'] = all_stock_data.xs('Close', level=1, axis=1).sum(axis=1)
-    # all_stock_data['Index Movement'] = all_stock_data['Index Movement'].pct_change()
-    # all_stock_data['Index Movement'] = all_stock_data['Index Movement'].shift(-1)
+    all_stock_data['Index Movement'] = all_stock_data.xs('Daily Return', level=1, axis=1).mean(axis=1)
     all_stock_data = all_stock_data.fillna(0)
 
-    # need to callculate now the combined RSI, MACD, Bolinger Bands, MA20
     # RSI
     all_stock_data['Combined RSI'] = all_stock_data.xs('RSI', level=1, axis=1).sum(axis=1)
     all_stock_data['Combined RSI'] = all_stock_data['Combined RSI'] / len(symbol_list)
@@ -51,7 +61,12 @@ def process_data(all_stock_data):
     return all_stock_data
 
 def normalize_data(all_stock_data):
-
+    """
+    This function normalizes the stock data using MinMaxScaler from sklearn.preprocessing.
+    It takes in a pandas dataframe containing the stock data and returns the normalized data.
+    If the normalized data already exists, it loads and returns it instead of normalizing again.
+    The function also saves the scaler object to a file for future use.
+    """
     if os.path.exists(os.path.join(DATA_DIR, 'stock_data_normalized.csv')):
         return load_data(DATA_DIR, 'stock_data_normalized.csv')
 
@@ -77,4 +92,9 @@ def normalize_data(all_stock_data):
     all_stock_data['Combined Bolinger Low'] = scaler.fit_transform(all_stock_data['Combined Bolinger Low'].values.reshape(-1,1))
     all_stock_data['Combined MA20'] = scaler.fit_transform(all_stock_data['Combined MA20'].values.reshape(-1,1))
     all_stock_data.to_csv(os.path.join(DATA_DIR, 'stock_data_normalized.csv'))
+    
+    # Save the scaler to a file
+    with open(os.path.join(DATA_DIR, 'scaler.pkl'), 'wb') as f:
+        pickle.dump(scaler, f)
+
     return all_stock_data
