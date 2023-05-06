@@ -9,7 +9,7 @@ from tensorflow.keras.models import load_model
 from config import MODELS_DIR, DATA_DIR
 
 # Define the number of previous data points to use for prediction
-lookback = 1000
+lookback = 500
 
 # Load the trained model
 model = load_model(os.path.join(MODELS_DIR, 'best_model_1.h5'))
