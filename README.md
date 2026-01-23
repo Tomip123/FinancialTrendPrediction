@@ -2,7 +2,7 @@
 
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![TensorForce](https://img.shields.io/badge/backend-TensorFlow%202.x-orange.svg)](https://tensorflow.org)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 > **Architecting the future of financial forecasting.** An advanced time-series analysis suite utilizing Stacked Long Short-Term Memory (LSTM) networks to predict technology sector trends on the NYSE.
 
@@ -73,7 +73,7 @@ The core engine is a sophisticated Stacked LSTM model implemented in TensorFlow/
    ```bash
    pip install -r requirements.txt
    ```
-   *(Note: Ensure requirements.txt includes tensorflow, yfinance, pandas, numpy, matplotlib, scikit-learn)*
+   *(Note: Ensure dependencies like `tensorflow`, `yfinance`, `pandas`, `numpy`, `matplotlib`, and `scikit-learn` are installed.)*
 
 3. **Running the latest version (v0.2)**:
    ```bash
